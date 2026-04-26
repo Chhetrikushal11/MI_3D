@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/glm-populate"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/8e7af9221015e3c10aa9909551f9bb4a/glm-populate.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/e4f72fdb5d3a0c0d4b1b0e4166d56ccd/glm-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glm-subbuild/CMakeFiles/5cd5fe62c6ce06d6765d11a9c36436c6/glm-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"glm-populate"
+		],
+		"name" : "glm-populate"
+	}
+}

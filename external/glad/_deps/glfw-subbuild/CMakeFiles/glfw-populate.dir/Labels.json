@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/glfw-populate"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/8ea927c3569eb8b00a38f6d0f81b17a2/glfw-populate.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/7defea4eef9e8341e24a0eb4c0b7a096/glfw-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/kbasnet/Desktop/MI/external/_deps/glfw-subbuild/CMakeFiles/575ad8279afe9e5bb109429b6b956596/glfw-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"glfw-populate"
+		],
+		"name" : "glfw-populate"
+	}
+}
