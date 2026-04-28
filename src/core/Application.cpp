@@ -117,6 +117,11 @@ namespace mi_3d
 		// for testing 
 		auto slices = parser.ParseDirectory("data/spinal_myeloma_real_ct");
 		std::cout << "Parse done. Slices: " << slices.size() << std::endl;
+		if (!slices.empty())
+		{
+			_mRescaleSlope = slices[0].rescaleSlope;
+			_mRescaleIntercept = slices[0].rescaleIntercept;
+		}
 
 		_mVolume = std::make_unique<VolumeData>();
 		std::cout << "Building volume..." << std::endl;
@@ -124,9 +129,18 @@ namespace mi_3d
 		std::cout << "Volume built." << std::endl;
 
 		std::cout << "Uploading to GPU..." << std::endl;
-		SetupVolumeTexture();
 		std::cout << "GPU upload done." << std::endl;
-
+		// --------------------- DEBUG — check real data range --------------------------------
+		int16_t globalMin = _mVolume->GetVoxels()[0];
+		int16_t globalMax = _mVolume->GetVoxels()[0];
+		for (auto v : _mVolume->GetVoxels()) {
+			if (v < globalMin) globalMin = v;
+			if (v > globalMax) globalMax = v;
+		}
+		std::cout << "Data range: " << globalMin << " to " << globalMax << std::endl;
+		std::cout << "Rescale slope: " << slices[0].rescaleSlope << std::endl;
+		std::cout << "Rescale intercept: " << slices[0].rescaleIntercept << std::endl;
+		// -----------------------------------------------------------------------
 		SetupVolumeTexture();
 		SetupTransferFunction();
 		SetupCallbacks();
@@ -225,10 +239,13 @@ namespace mi_3d
 		glViewport(x, y, width, height);
 		glDisable(GL_DEPTH_TEST);
 		_mSliceShader->UseProgramID();
+		_mSliceShader->SetUniformFloat("uRescaleSlope", _mRescaleSlope);
+		_mSliceShader->SetUniformFloat("uRescaleIntercept", _mRescaleIntercept);
 		_mSliceShader->SetUniformInt("uViewMode", viewMode);
 		_mSliceShader->SetUniformFloat("uSliceZ", _mSliceZ);
 		_mSliceShader->SetUniformFloat("uWindowCenter", _mWindowCenter);
 		_mSliceShader->SetUniformFloat("uWindowWidth", _mWindowWidth);
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_3D, _mVolumeTexture);
@@ -248,6 +265,7 @@ namespace mi_3d
 		glEnable(GL_CULL_FACE); glCullFace(GL_BACK);
 		_mRaycastShader->UseProgramID();
 		_mRaycastShader->SetUniformMat4("uViewProjection", vp);
+
 		glBindVertexArray(_mVAO);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
@@ -262,6 +280,9 @@ namespace mi_3d
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(x, y, width, height); 
 		_mVolumeShader->UseProgramID();
+
+		_mVolumeShader->SetUniformFloat("uRescaleSlope", _mRescaleSlope);
+		_mVolumeShader->SetUniformFloat("uRescaleIntercept", _mRescaleIntercept);
 
 		glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_2D, _mEntryTexture);
 		glActiveTexture(GL_TEXTURE1); glBindTexture(GL_TEXTURE_2D, _mExitTexture);
@@ -387,7 +408,7 @@ namespace mi_3d
 		for (int i = 0; i < 256; i++)
 		{
 			float t = static_cast<float>(i) / 255.0f;
-			float hu = t * 2000.0f - 1000.0f; // maps to -1000 to + 1000
+			float hu = t * 4096.0f - 1024.0f; // maps to -1024 to + 3071
 
 			// now decide color based on HU value
 			float r, g, b, a;

@@ -11,6 +11,9 @@ uniform sampler1D uTransferFunc;
 uniform float uClipMin;
 uniform float uClipMax;
 
+uniform float uRescaleSlope;
+uniform float uRescaleIntercept;
+
 out vec4 FragColor;
 
    vec3 computeGradient(vec3 pos, float offset)
@@ -43,8 +46,11 @@ void main()
 		// ----Clip Check Start -----
 		if  (pos.x >= uClipMin && pos.x <= uClipMax)
 		{
-			float density = texture(uVolume, pos).r * 32767.0;
-			float normalized = (density + 1000.0) / 2000.0;
+	
+			float raw = texture(uVolume, pos).r * 32767.0;
+			float hu = raw * uRescaleSlope + uRescaleIntercept;
+			float normalized = (hu + 1024.0) / 4096.0;
+
 			vec4 color = texture(uTransferFunc, normalized);
 
 		// -------Cliping Check End --------

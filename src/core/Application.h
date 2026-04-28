@@ -73,11 +73,14 @@ namespace mi_3d
 
 		// Medical Imaging State
 		float _mSliceZ = 0.5f;
-		float _mWindowCenter = 40.0f;
-		float _mWindowWidth = 400.0f;
+		float _mWindowCenter = 400.0f;
+		float _mWindowWidth = 2000.0f;
 		float _mStepSize = 0.005f;
 		float _mClipMin = 0.0f;
 		float _mClipMax = 1.0f;
+
+		float _mRescaleSlope = 1.0f;
+		float _mRescaleIntercept = 0.0f;
 
 		int _mCurrentViewIndex = 0;
 		RenderMode _mCurrentMode = RenderMode::Slice2D;
