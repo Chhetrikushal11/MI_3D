@@ -84,6 +84,25 @@ namespace mi_3d
                 // the 2 bytes we read as "length" were actually padding — discard them
                 length = ReadUint32(file);  // real length is 4 bytes
             }
+            // Handle undefined length (0xFFFFFFFF) — skip this tag entirely
+            if (length == 0xFFFFFFFF)
+            {
+                // Sequence with undefined length — we can't skip it by size
+                // Scan forward for the sequence delimiter tag (FFFE,E0DD)
+                while (!file.eof())
+                {
+                    uint16_t g = ReadUint16(file);
+                    uint16_t e = ReadUint16(file);
+                    if (g == 0xFFFE && e == 0xE0DD)
+                    {
+                        ReadUint32(file); // skip the delimiter's length field (always 0)
+                        break;
+                    }
+                    // Back up 2 bytes — we read element but might need it as next group
+                    file.seekg(-2, std::ios::cur);
+                }
+                continue; // skip to next tag
+            }
 
             // ---- CHECK WHICH TAG THIS IS ----
             /*

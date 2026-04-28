@@ -112,9 +112,20 @@ namespace mi_3d
 		_mAppCamera = std::make_unique<Camera>();
 
 		DicomParser parser;
-		auto slices = parser.ParseDirectory("data/test_ct");
+		std::cout << "Starting parse...." << std::endl;
+		/*auto slices = parser.ParseDirectory("data/test_ct");*/
+		// for testing 
+		auto slices = parser.ParseDirectory("data/spinal_myeloma_real_ct");
+		std::cout << "Parse done. Slices: " << slices.size() << std::endl;
+
 		_mVolume = std::make_unique<VolumeData>();
+		std::cout << "Building volume..." << std::endl;
 		_mVolume->Build(slices);
+		std::cout << "Volume built." << std::endl;
+
+		std::cout << "Uploading to GPU..." << std::endl;
+		SetupVolumeTexture();
+		std::cout << "GPU upload done." << std::endl;
 
 		SetupVolumeTexture();
 		SetupTransferFunction();
