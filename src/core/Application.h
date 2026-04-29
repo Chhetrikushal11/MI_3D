@@ -92,5 +92,11 @@ namespace mi_3d
 
 		void RenderSingleSlice(int viewMode, int x, int y, int width, int height);
 		void RenderVolumeSide(const glm::mat4& vp, int x, int y, int width, int height);
+
+
+		// optimization 
+		GLuint _mTimerQueries[3] = { 0, 0, 0 };// one per pass 
+		float _mPassTimes[3] = { 0.0f, 0.0f, 0.0f }; // results in milliseconds
+
 	};
 }

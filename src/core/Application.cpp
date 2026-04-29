@@ -156,6 +156,8 @@ namespace mi_3d
 
 		_mAppUI = std::make_unique<UIManager>(_mAppWindow->GetHandle());
 
+		glGenQueries(3, _mTimerQueries);
+
 		return true;
 	}
 
@@ -174,6 +176,13 @@ namespace mi_3d
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			_mAppUI->BeginFrame();
+			// Read GPU timer results
+			for (int i = 0; i < 3; i++)
+			{
+				GLuint64 elapsed = 0;
+				glGetQueryObjectui64v(_mTimerQueries[i], GL_QUERY_RESULT, &elapsed);
+				_mPassTimes[i] = elapsed / 1000000.0f;  // nanoseconds to milliseconds
+			}
 
 			// --- UI Sidebar ---
 			ImGui::SetNextWindowPos(ImVec2((float)drawW, 0));
@@ -204,6 +213,12 @@ namespace mi_3d
 
 
 				}
+			ImGui::Separator();
+			ImGui::Text("GPU Profiling");
+			ImGui::Text("Pass 1 (Entry):  %.2f ms", _mPassTimes[0]);
+			ImGui::Text("Pass 2 (Exit):   %.2f ms", _mPassTimes[1]);
+			ImGui::Text("Pass 3 (Volume): %.2f ms", _mPassTimes[2]);
+			ImGui::Text("Total GPU:       %.2f ms", _mPassTimes[0] + _mPassTimes[1] + _mPassTimes[2]);
 			ImGui::End();
 
 			// --- Rendering Logic ---
@@ -259,24 +274,28 @@ namespace mi_3d
 	void Application::RenderVolumeSide(const glm::mat4& vp, int x, int y, int width, int height)
 	{
 		// Pass 1: Entry Points
+		glBeginQuery(GL_TIME_ELAPSED, _mTimerQueries[0]);
 		glBindFramebuffer(GL_FRAMEBUFFER, _mEntryFBO);
 		glViewport(0, 0, _mAppWindow->GetWidth(), _mAppWindow->GetHeight()); 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_CULL_FACE); glCullFace(GL_BACK);
 		_mRaycastShader->UseProgramID();
 		_mRaycastShader->SetUniformMat4("uViewProjection", vp);
-
 		glBindVertexArray(_mVAO);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glEndQuery(GL_TIME_ELAPSED);
 
 		// Pass 2: Exit Points
+		glBeginQuery(GL_TIME_ELAPSED, _mTimerQueries[1]);
 		glBindFramebuffer(GL_FRAMEBUFFER, _mExitFBO);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glCullFace(GL_FRONT);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		glDisable(GL_CULL_FACE);
+		glEndQuery(GL_TIME_ELAPSED);
 
 		// Pass 3: Raycasting to Screen
+		glBeginQuery(GL_TIME_ELAPSED, _mTimerQueries[2]);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(x, y, width, height); 
 		_mVolumeShader->UseProgramID();
@@ -301,6 +320,7 @@ namespace mi_3d
 		glBindVertexArray(_mSliceVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glEnable(GL_DEPTH_TEST);
+		glEndQuery(GL_TIME_ELAPSED);
 	}
 	void Application::SetupVolumeTexture()
 	{
@@ -571,6 +591,7 @@ namespace mi_3d
 		glDeleteTextures(1, &_mVolumeTexture);
 		glDeleteVertexArrays(1, &_mSliceVAO);
 		glDeleteBuffers(1, &_mSliceVBO);
+		glDeleteQueries(3, _mTimerQueries);
 
 		glDeleteFramebuffers(1, &_mEntryFBO);
 		glDeleteTextures(1, &_mEntryTexture);
