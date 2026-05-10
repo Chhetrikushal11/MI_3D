@@ -23,7 +23,7 @@ namespace mi_3d
 		// for slice shader
 		void SetUniformFloat(const std::string& name, float value) const;
 
-		void Shader::SetUniformInt(const std::string& name, int value) const;
+		void SetUniformInt(const std::string& name, int value) const;
 	private:
 		// for ticketing purpose
 		GLuint _mProgramID = 0; // default value is zero;

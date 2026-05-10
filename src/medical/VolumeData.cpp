@@ -28,7 +28,7 @@ namespace mi_3d
 		
 
 
-		// Step 4: calculate Z spacing — how? (hint: two adjacent slices)
+		// Step 4: calculate Z spacing ï¿½ how? (hint: two adjacent slices)
 		if (slices.size() > 1)
 		{
 			_mPixelSpacingZ = slices[1].imagePositionZ - slices[0].imagePositionZ;
@@ -39,11 +39,11 @@ namespace mi_3d
 		}
 
 
-		// Step 5: resize _mVoxels — how big?
+		// Step 5: resize _mVoxels ï¿½ how big?
 		uint32_t sliceSize = _mSliceWidth * _mSliceHeight;
 		_mVoxels.resize(sliceSize * _mDepth);
 
-		// Step 6: loop through slices, copy each one's pixels — where does slice i go?
+		// Step 6: loop through slices, copy each one's pixels ï¿½ where does slice i go?
 		for (uint32_t i = 0; i < _mDepth; i++)
 		{
 			std::copy(
